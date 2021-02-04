@@ -51,7 +51,7 @@ popd
 
 ### create spy!
 mkdir -p "/var/www/spy/$basestring"
-cp -r ../spy "/var/www/spy/$basestring"
+cp -r ../spy/* "/var/www/spy/$basestring"
 pushd "/var/www/spy/$basestring"
 chmod +x ./build ./spyconfig.cgi
 ./build $basestring
