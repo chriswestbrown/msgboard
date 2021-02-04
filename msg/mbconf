@@ -1,0 +1,9 @@
+#!/usr/bin/perl
+
+# create command vector
+@comm = ("make");
+push(@comm,@ARGV);
+
+# call command ... this way, shell meta-characters in @comm
+# are left unexpanded
+system { $comm[0] } @comm;

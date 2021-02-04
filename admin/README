@@ -1,0 +1,17 @@
+0)
+1) To configure the webserver, run: sudo ./installWebserver
+2) This "admin" directory should be put in /var/www/html
+and chown'd over to user www.data.
+pushd /var/www/html
+sudo chown -R www-data .
+popd
+pushd /var/www
+sudo mkdir -p spy
+sudo chown -R spy
+popd
+3)
+pushd /var/www/html/admin
+sudo -u www-data cp -r stempswd20 /var/www/html/
+sudo -u www-data cp -r stempswd20 /var/www/spy/
+
+

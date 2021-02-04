@@ -1,0 +1,35 @@
+This project is creating a version of the CS Dept's STEM
+password activity that is realistic for a high school teacher
+with some technical competency.  The focus is on an infrastructure
+that will work with little to no customer service from us.
+
+1. Libraries we rely on: directories CryptoJS and xterm
+
+2. Our code:
+
+   * stemshell.html - webpage for the shell
+
+   * stemshellbase.js - javascript functions
+
+   Feel free to modify this, add new files, etc!
+
+3. This does not require a webserver.  You can pull it up locally
+   in your browser (ctrl+o) and navigate to stemshell.html.
+
+4. Major TODO:
+
+   * get things looking nice!  Nice border around terminal, etc.
+     - start with focus.  DONE!
+
+   * get MD5 working like it would in a shell.  Mainly this means
+     when I backarrow and forward arrow it works, inserting characters
+     works properly, "s and 's are handled nicely, can't arrow past the
+     current last non-space character, etc.  PROGRESSING!
+     NOTE: Insert is still not working!
+
+   * get rytop command working.  It should show the top 20 entries
+     of top100.txt  by default.  If run as rytop <n>, should show the
+     top <n> entries (up to 100).  DONE!
+
+   * make sure code is organized nicely so I can potentially add more
+     stuff!  PROGRESSING!

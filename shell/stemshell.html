@@ -1,0 +1,46 @@
+<!doctype html>
+  <html>
+    <head>
+      <link rel="stylesheet" href="../shellbase/xterm/css/xterm.css" />
+      <link rel="stylesheet" href="../shellbase/stem.css" />
+      <script src="../shellbase/xterm/lib/xterm.js"></script>
+      <script src="../shellbase/CryptoJS/components/core.js"></script>
+      <script src="../shellbase/CryptoJS/components/md5.js"></script>
+    </head>
+
+    <body>
+
+      <div class="stemterm" id="terminal"></div>
+
+      
+      <!-- Load rytop100 -->
+      <script src="../shellbase/ryt100.js"></script>
+
+      <!-- Load our elizabeth's function definitions -->
+      <script src="../shellbase/steme.js"></script>
+
+      <!-- Load our javascript basic function definitions -->
+      <script src="../shellbase/stemshellbase.js"></script>
+
+      <!-- BEGIN LOAD COMMAND PLUGINS -->
+      <script src="stu.js"></script>
+      <!-- END LOAD COMMAND PLUGINS -->
+
+      <!-- Create new terminal, attatch to div above, start running -->
+      <script>
+	function tst() { console.log(term.buffer._buffer.y); }
+	var options = new  Object();//ITerminalOptions();
+	options.cols = 80;
+        var term = new Terminal(options);
+        term.open(document.getElementById('terminal'));
+
+	// This makes copy & paste with right clicks actually work!
+	term.onData(function(data) { stemTermPaste(term,data.toString()); });
+	
+	runFakeTerminal(term,'Welcome to the USNA STEM Password Shell!');
+	term.focus(); // This makes the page start with focus in terminal
+      </script>
+
+    </body>
+  </html>
+  

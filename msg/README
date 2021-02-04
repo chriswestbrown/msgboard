@@ -1,0 +1,73 @@
+Minimal Message Board
+
+NOW THIS IS WOEFULLY OUT OF DATE!!
+
+GIVE THE COMMAND ./mbconf -h FOR MORE UP-TO-DATE INFO!
+
+DEVELOPERS ONLY:
+This is now in a bzr repository.  Checkout a copy with
+bzr checkout bzr+ssh://si110@wasabi.academy.usna.edu/home/si110/dev/msg
+
+
+A. This directory contains a minimal message board
+   with authentication.  Nothing is done securely,
+   that's sort of the point!  Note that this has
+   to be accesed via http, file:///... won't work,
+   because it needs to interact with the webserver.
+
+B. From the user view, there are three pages of note:
+   newacct.html <--- page for creating a new account
+   login.htm    <--- page for login to existing account
+   mb.html      <--- the actual message board
+
+C. The "under the hood" view is this:
+   0. the file .htaccess forces (kindly requests that)
+      the browsers to fetch fresh copies of mb.html
+      instead of using cache'd copies.  The upshot is
+      that a posted message reliably appears without
+      user initiated refresh.
+   1. usernames & passwords are stored in pswd.txt.
+   2. posted messages are stored in msgRAW.
+   3. When a message is submitted via mb.html, it is
+      sent to mb.cgi, where the message (prefaced with
+      the username) is added to msgRAW.  Then a new 
+      mb.html is created by mb.cgi, which finally sends
+      the user back to mb.html.
+   4. login.html calls login.cgi to actually authenticate
+   5. newacct.html calls newacct.cgi to create a new account
+   6. login.cgi saves a cookie with username and password
+      on the client machine, which is how access (to post)
+      is controlled.
+
+D. Set Up
+   Copy this directory (msg) wherever you want the board.
+   All linking is relative, so move/rename this
+   directory wherever you like, and it'll all work.
+   Permissions are important though.  This sets them:
+
+   chmod 755 newacct.cgi login.cgi mb.cgi
+   chmod 644 newacct.html login.html
+   chmod 666 msgRAW pswd.txt mb.html
+
+   Note that by turning off read or execute permissions on
+   newacct.cgi you disable account creation.  So doing
+
+   chmod 700 newacct.cgi
+
+   will make it impossible for someone to create a new
+   message board account.
+
+E. You can clear the message board by sending the
+   message "clearit" - either from mb.html or on
+   the URL bar as "mb.cgi?msg=clearit".
+   You can add users by editing the file pswd.txt 
+   rather than using newacct.html if you prefer.
+   The format of pswd.txt is uname:passwd, one per line,
+   e.g.
+
+   wcbrown:foobar
+   crabbe:barfoo
+
+
+
+   

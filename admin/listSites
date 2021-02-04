@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# NOTE: This script is intended to be run by user www-data!
+
+FILE="sitesDB"
+
+if [ -f "$FILE" ]; then
+    echo "There are currently no sites."
+else
+    cat siteDB
+fi
+
+
+

@@ -1,0 +1,32 @@
+#!/bin/bash
+
+MYSELF=`which "$0" 2>/dev/null`
+[ $? -gt 0 -a -f "$0" ] && MYSELF="./$0"
+
+if [ "$#" -ne 1 ]; then
+    echo "usage: "$(basename $MYSELF) "<basestring>"
+    exit 1
+fi
+
+basestring="$1"
+uname="inst$basestring"
+
+# check that name is in siteDB
+egrep "^$basestring:" siteDB
+if [ "$?" -ne 0 ]; then
+    echo "Name $basestring not in siteDB!  Exiting ..."
+    exit 1
+fi    
+
+# remove from siteDB
+sed -i "/$basestring/d" siteDB
+
+# delete dir with msg board
+pushd /var/www/html
+rm -rf "$basestring"
+popd
+pushd /var/www/spy
+rm -rf "$basestring"
+popd
+
+echo "$basestring removed!"

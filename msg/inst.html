@@ -1,0 +1,29 @@
+<html>
+<head>
+<meta http-equiv="Cache-Control" content="no-cache, no-store,
+					  must-revalidate" />
+<meta http-equiv="Pragma" content="no-cache" />
+<meta http-equiv="Expires" content="0" />
+    <script>
+    action = function(optstr) {
+	const http = new XMLHttpRequest();
+	var url = "mbconfig.cgi?opt="+encodeURI(optstr);
+	http.open("GET",url);
+	http.send();
+	http.onreadystatechange=(e)=>{
+	    console.log(http.responseText);
+	}
+}
+    </script>
+</head>
+<body>
+
+    <span onclick="action('init')">init</span><br>
+    <span onclick="action('lock')">lock</span><br>
+    <span onclick="action('unlock')">unlock</span><br>
+    <span onclick="action('hash unlock')">hash</span><br>
+    <span onclick="action('hash salt unlock')">saltandhash</span><br>
+    <span onclick="action('status')">status</span><br>
+    
+</body></html>
+

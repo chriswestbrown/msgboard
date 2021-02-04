@@ -1,0 +1,22 @@
+
+body { 
+  font-family: Helvetica, sans-serif;
+  font-size: 10pt;
+  margin-left: 5em; margin-right: 5em; 
+  margin-top: 2em; margin-bottom: 2em; 
+  color: var(--base-color);
+  background: #FFFFFF; 
+  //background-image: linear-gradient(to bottom rigt, #050505, yellow);
+}
+
+.stemterm {
+    padding: 1em;
+    background: #000000;
+    border-style: solid;
+    border-color: blue;
+    border-width: 5pt;
+    border-radius: 5pt;
+    box-shadow: 10px 10px 5px grey;
+    width:fit-content; 
+    height:fit-content;
+}

@@ -1,0 +1,158 @@
+#!/bin/bash
+
+### install packages we'll need
+sudo apt-get -y update
+sudo apt-get -y install apache2
+sudo apt-get -y install libapache2-mod-perl2
+sudo apt-get -y install make
+sudo apt-get -y install curl
+sudo apt-get install acl
+sudo apt-get install libcgi-session-perl
+
+### Install perl module that for unknown reasons is missing as we go forward
+echo "yes" | sudo cpan -if CGI::Carp
+
+### add www-data to the admin group so it gets access to webserver logs.
+### NOTE: normally this would be a *bad* idea ... we need it though.
+sudo usermod -a -G adm www-data
+
+### configure the webserver with our wierd configuration
+# reconstruct /etc/apache2/sites-available/000-default.conf
+rm -f tmpconf
+cat > tmpconf <<-END
+<VirtualHost *:80>
+# This is just here to turn off http access with a NOT FOUND error!
+ServerName www.usnastem.net
+ServerAdmin webmaster@localhost
+DocumentRoot /var/www/html
+       <Directory /var/www/html/>
+       require ip 0.0.0.0/32
+       </Directory>
+</VirtualHost>
+
+<VirtualHost *:443>
+# The ServerName directive sets the request scheme, hostname and port that
+# the server uses to identify itself. This is used when creating
+# redirection URLs. In the context of virtual hosts, the ServerName
+# specifies what hostname must appear in the request's Host: header to
+# match this virtual host. For the default virtual host (this file) this
+# value is not decisive as it is used as a last resort host regardless.
+# However, you must set it for any further virtual host explicitly.
+#ServerName www.example.com
+
+ServerName www.usnastem.net
+ServerAdmin webmaster@localhost
+DocumentRoot /var/www/html
+
+SSLEngine on
+SSLCertificateFile /etc/letsencrypt/live/www.usnastem.net/cert.pem
+SSLCertificateKeyFile /etc/letsencrypt/live/www.usnastem.net/privkey.pem
+SSLCertificateChainFile /etc/letsencrypt/live/www.usnastem.net/fullchain.pem
+
+       <Directory /var/www/html/>
+         Require all granted
+         AllowOverride All
+         Options +ExecCGI -MultiViews -Indexes
+         AddHandler cgi-script .cgi
+       </Directory>
+
+
+# Available loglevels: trace8, ..., trace1, debug, info, notice, warn,
+# error, crit, alert, emerg.
+# It is also possible to configure the loglevel for particular
+# modules, e.g.
+#LogLevel info ssl:warn
+
+ErrorLog ${APACHE_LOG_DIR}/error.log
+CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+# For most configuration files from conf-available/, which are
+# enabled or disabled at a global level, it is possible to
+# include a line for only one particular virtual host. For example the
+# following line enables the CGI configuration for this host only
+# after it has been globally disabled with "a2disconf".
+#Include conf-available/serve-cgi-bin.conf
+</VirtualHost>
+END
+
+# push to real 000-default.conf
+sudo tmpconf /etc/apache2/sites-available/000-default.conf
+rm -f tmpconf
+
+
+### configure the webserver with our spy
+# reconstruct /etc/apache2/sites-available/001-default.conf
+rm -f tmpconf
+cat > tmpconf <<-END
+<VirtualHost *:80>
+# This is just here to turn off http access with a NOT FOUND error!
+ServerName www.usnastam.net
+ServerAdmin webmaster@localhost
+DocumentRoot /var/www/html
+       <Directory /var/www/html/>
+       require ip 0.0.0.0/32
+       </Directory>
+</VirtualHost>
+
+<VirtualHost *:443>
+# The ServerName directive sets the request scheme, hostname and port that
+# the server uses to identify itself. This is used when creating
+# redirection URLs. In the context of virtual hosts, the ServerName
+# specifies what hostname must appear in the request's Host: header to
+# match this virtual host. For the default virtual host (this file) this
+# value is not decisive as it is used as a last resort host regardless.
+# However, you must set it for any further virtual host explicitly.
+#ServerName www.example.com
+
+ServerName www.usnastam.net
+ServerAdmin webmaster@localhost
+DocumentRoot /var/www/spy
+
+SSLEngine on
+SSLCertificateFile /etc/letsencrypt/live/www.usnastam.net/cert.pem
+SSLCertificateKeyFile /etc/letsencrypt/live/www.usnastam.net/privkey.pem
+SSLCertificateChainFile /etc/letsencrypt/live/www.usnastam.net/fullchain.pem
+
+       <Directory /var/www/spy/>
+         Require all granted
+         AllowOverride All
+         Options +ExecCGI -MultiViews -Indexes
+         AddHandler cgi-script .cgi
+       </Directory>
+
+
+# Available loglevels: trace8, ..., trace1, debug, info, notice, warn,
+# error, crit, alert, emerg.
+# It is also possible to configure the loglevel for particular
+# modules, e.g.
+#LogLevel info ssl:warn
+
+ErrorLog ${APACHE_LOG_DIR}/usnastam.net-error.log
+CustomLog ${APACHE_LOG_DIR}/usnastam.net-access.log combined
+
+# For most configuration files from conf-available/, which are
+# enabled or disabled at a global level, it is possible to
+# include a line for only one particular virtual host. For example the
+# following line enables the CGI configuration for this host only
+# after it has been globally disabled with "a2disconf".
+#Include conf-available/serve-cgi-bin.conf
+</VirtualHost>
+END
+
+# push to real 001-default.conf
+sudo tmpconf /etc/apache2/sites-available/001-default.conf
+rm -f tmpconf
+
+pushd /etc/apache2/sites-enabled
+ln -s ../sites-available/000-default.conf
+ln -s ../sites-available/001-default.conf
+popd
+
+
+
+sudo a2enmod rewrite
+sudo a2enmod cgid
+sudo a2enmod ssl
+sudo service apache2 restart
+
+echo "Done.  Now install rychunks and rysplits by hand into /var/www/html"

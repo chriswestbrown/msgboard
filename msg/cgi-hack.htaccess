@@ -1,0 +1,43 @@
+#!/usr/bin/perl
+
+$dir = `pwd`;
+$dir =~ /.*\/(.*)\/www\/(.*)$/; 
+$base = "/~$1/$2"; 
+if (`hostname` eq "www.red.net\n") { $base = "/msg"; }
+#### NOTE: CWB 5/9/2016
+####       I commented out the code that uses these
+####       variables to set RewriteBase, since it seems
+####       no longer to be needed, and was causing 
+####       problems.
+
+print <<END;
+######################################################
+# DirectoryIndex mb.html
+######################################################
+
+######################################################
+# This is a bit of an artificial bug ... this makes it
+# seem like rona is willing to show us the source code
+# for mb.cgi
+# HOW THIS WORKS:
+# 1. The RewriteBase is the path to the message board
+#    directory
+# 2. THE_REQUEST is the actual GET request line 
+#    (e.g., "GET /index.html HTTP/1.1"), and the RewriteCond
+#    checks that it contains mb.cgi followed by a space
+#    (or endline, which will never actually happen!)
+# 3. The request target is changed from mb.cgi to mb.pl,
+#    which has the effect of not executing the script.
+######################################################
+RewriteEngine On
+END
+#print "RewriteBase   $base\n";
+print <<END;
+RewriteCond %{THE_REQUEST} mb.cgi(\\s|\$)
+RewriteRule ^mb\.cgi\$ mb.pl [QSA,L,PT]
+
+AddType text/plain .pl
+AddHandler cgi-script .cgi
+Options +ExecCGI
+
+END

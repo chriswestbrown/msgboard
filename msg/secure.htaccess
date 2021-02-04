@@ -1,0 +1,7 @@
+######################################################
+# This ensures that the pswd.txt file will not be served
+######################################################
+<Files pswd.txt>
+order allow,deny
+deny from all
+</Files>

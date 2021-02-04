@@ -1,0 +1,64 @@
+#!/bin/bash
+
+# NOTE: This script is intended to be run my user www-data!
+
+MYSELF=`which "$0" 2>/dev/null`
+[ $? -gt 0 -a -f "$0" ] && MYSELF="./$0"
+
+if [ "$#" -ne 2 ]; then
+    echo "usage: "$(basename $MYSELF) "<basestring> <pswd>"
+    exit 1
+fi
+
+basestring="$1"
+pswd="$2"
+uname="inst$basestring"
+
+# get base of msgboard install (i.e. where this script is!)
+pushd ..
+msgboardInstallBase=`pwd`
+popd
+
+# check whether name is in siteDB
+egrep "^$basestring:" siteDB
+if [ "$?" -eq 0 ]; then
+    echo "Name $basestring already exists!  Exiting ..."
+    exit 1
+fi    
+
+# move and setup instructor
+mkdir -p "tmp/$basestring"
+cp -r ../msg "tmp/$basestring"
+cp -r ../inst "tmp/$basestring"
+cp -r ../shell "tmp/$basestring"
+# record
+echo "$basestring:$pswd" >> siteDB
+
+# push to /var/www/html
+pushd tmp
+mv -f "$basestring" /var/www/html
+popd
+rm -rf tmp
+
+# setup shell base link
+pushd "/var/www/html/$basestring"
+ln -s "$msgboardInstallBase/shellbase"
+popd
+pushd "$msgboardInstallBase/shellbase"
+ln -s /var/www/html/rychunks || true
+ln -s /var/www/html/rysplits || true
+popd 
+
+### create spy!
+mkdir -p "/var/www/spy/$basestring"
+cp -r ../spy "/var/www/spy/$basestring"
+pushd "/var/www/spy/$basestring"
+chmod +x ./build ./spyconfig.cgi
+./build $basestring
+popd
+pushd "/var/www/spy" 
+ln -s "$msgboardInstallBase/shellbase" || true
+popd
+
+echo "$basestring added!"
+
