@@ -1,7 +1,7 @@
 commandExec["dcrackT"] = function(rest) {
     keyboardLockOut = true;
     const http = new XMLHttpRequest();
-    var url = "dcrackT.cgi?opt="+encodeURI("dcrackT " + rest);
+    var url = "../shellbase/dcrackT.cgi?opt="+encodeURI("dcrackT " + rest);
     http.onreadystatechange=(e)=>{
 	if (http.readyState == 4 && http.status == 200) {
 	    var resp = http.responseText.trimEnd();
@@ -55,7 +55,7 @@ commandExec["dcrack"] = function(rest) {
 		http.abort();
 		currNum++;
 		http = new XMLHttpRequest();
-		url = "rychunks/" + currNum;
+		url = "../shellbase/rychunks/" + currNum;
 		console.log("sending " + url + " ... ");
 		http.onreadystatechange=respondFun;
 		http.open("GET",url);
@@ -72,7 +72,7 @@ commandExec["dcrack"] = function(rest) {
     
     currNum++;
     let http = new XMLHttpRequest();
-    let url = "rychunks/" + currNum;
+    let url = "../shellbase/rychunks/" + currNum;
     http.onreadystatechange=respondFun;
     http.open("GET",url);
     http.send();
