@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# NOTE: This script is intended to be run my user www-data!
+# NOTE: This script is intended to be run by user www-data!
 
 MYSELF=`which "$0" 2>/dev/null`
 [ $? -gt 0 -a -f "$0" ] && MYSELF="./$0"

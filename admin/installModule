@@ -1,0 +1,33 @@
+#!/bin/bash
+
+# Add module to existing instructor
+# NOTE: This script is intended to be run by user www-data!
+
+MYSELF=`which "$0" 2>/dev/null`
+[ $? -gt 0 -a -f "$0" ] && MYSELF="./$0"
+
+if [ "$#" -ne 2 ]; then
+    echo "usage: "$(basename $MYSELF) "<basestring> <modulename>"
+    exit 1
+fi
+
+basestring="$1"
+modulename="$2"
+
+if [ ! -e "/var/www/html/$basestring" ]; then
+    echo "No instructor named '$basestring' exists."
+    exit 2
+fi
+
+if [ ! -e "../$modulename" ]; then
+    echo "No module named '$modulename' exists."
+    exit 2
+fi
+
+cp -r "../$modulename" "/var/www/html/$basestring"
+pushd "/var/www/html/$basestring/$modulename"
+./install ../inst/adminshell.html
+popd
+
+echo "Module $modulename installed for instructor $basestring."
+
