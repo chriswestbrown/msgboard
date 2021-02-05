@@ -19,12 +19,12 @@ if [ ! -e "/var/www/html/$basestring" ]; then
     exit 2
 fi
 
-if [ ! -e "../$modulename" ]; then
+if [ ! -e "../modules/$modulename" ]; then
     echo "No module named '$modulename' exists."
     exit 2
 fi
 
-cp -r "../$modulename" "/var/www/html/$basestring"
+cp -r "../modules/$modulename" "/var/www/html/$basestring"
 pushd "/var/www/html/$basestring/$modulename"
 ./install ../inst/adminshell.html
 popd

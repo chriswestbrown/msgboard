@@ -1,0 +1,5 @@
+The idea here is that modules may exist as separate
+git repos.  Info:
+
+    https://git-scm.com/book/en/v2/Git-Tools-Submodules
+
