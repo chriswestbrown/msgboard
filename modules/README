@@ -3,3 +3,13 @@ git repos.  Info:
 
     https://git-scm.com/book/en/v2/Git-Tools-Submodules
 
+
+Note the assumed layout of a module project is:
+
+foomodule
+  \________foomodule
+
+... where the outer 'foomodule' directory contains
+things that shouldn't end up as part of the
+instructor site, and the inner is the actual directory
+that should appear in the instructor site.
