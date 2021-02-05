@@ -1,0 +1,3 @@
+[submodule "modules/cryptodemo"]
+	path = modules/cryptodemo
+	url = https://github.com/chriswestbrown/cryptodemo.git
