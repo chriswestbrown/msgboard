@@ -24,7 +24,7 @@ if [ ! -e "../modules/$modulename" ]; then
     exit 2
 fi
 
-cp -r "../modules/$modulename" "/var/www/html/$basestring"
+cp -r "../modules/$modulename/$modulename" "/var/www/html/$basestring"
 pushd "/var/www/html/$basestring/$modulename"
 ./install ../inst/adminshell.html
 popd
