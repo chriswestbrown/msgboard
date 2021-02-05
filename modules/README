@@ -3,3 +3,21 @@ git repos.  Info:
 
     https://git-scm.com/book/en/v2/Git-Tools-Submodules
 
+git submodule add https://github.com/chriswestbrown/cryptodemo.git
+
+
+To pull now I need:
+git pull
+-and- 
+git submodule update --init --recursive
+
+
+Note the assumed layout of a module project is:
+
+foomodule
+  \________foomodule
+
+... where the outer 'foomodule' directory contains
+things that shouldn't end up as part of the
+instructor site, and the inner is the actual directory
+that should appear in the instructor site.
