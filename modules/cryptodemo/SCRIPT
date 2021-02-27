@@ -1,0 +1,185 @@
+1. SETUP - things done before activity
+   a. adminshell.html in tab
+      Reset cryptodemo page is reset to blank
+      * cdconf reset
+      msg board - set up so that everyone is escaped except first account
+      * mbconf init secure escapeall
+      * create 'drbrown' account as first account on message board
+        and post link to cryptdemo:
+
+        <a href="https://www.usnastem.net/set/cryptodemo/" target="_blank" rel="noopener noreferrer">https://www.usnastem.net/set/cryptodemo/</a>
+	
+   b. message board in tab
+   c. stemcryptodemo website in tab
+   d. wolfram alpha in tab
+   f. text file with text for copy and paste up.
+
+LINKS:
+* stemcryptodemo: https://www.usnastem.net/set/cryptodemo/
+* message board : https://www.usnastem.net/set/msg/mb.html
+* admin shell   : https://www.usnastem.net/set/inst/adminshell.html
+
+2. ON ARRIVAL
+   NOTE: Communicate ahead of time that they have to be prepared to flip between three
+         Windows.
+	 Zoom window / browser-message-board / browser-cryptotools
+	 And warn them not to confuse *my screenshare* of these pages, with their pages.
+
+   NOTE: In Zoom, use the share/advanced/secondcamera option to show the whiteboard.
+         NOTE: *must* start with screenshare, and then switch to sharing second camera,
+	       otherwise the meeting controls disappear.
+   NOTE: link for crypto demo *must* open in a different tab
+   NOTE: Clear about which window to look at when I'm making a point
+   NOTE: Take out the function/permutation business.
+   a. Post link to message board in chat and have everyone open it and open the cryptoools
+      page (linked on message board).  Clarify: *Keep these two tabs open all the time*!!
+   a. have everyone create a message board account and post something (small)
+      don't tell them why, just say we'll be using it.
+      IMPORTANT!!! "You must use the same username as you are using for this zoom session!"
+   b. lock message board: mbconf lock
+   c. tell brief story of Alice, Bob and Eve
+   d. point out that the common case today is something like
+      Alice = browser, Bob = bank's webserver, Eve is illicit monitoring program
+      IMPORTANT!!! The point of today's activity is to get some insight into how
+                   secure browser-webserver communication works "under the hood".
+      However, to get there we'll ...
+   e. ... go back to Alice and Bob and Eve.  The solution today, as it's been
+      for 1000s of years is to *encrypt* the message before sending it.
+      Idea: Alice and Bob have a secret "key" that they agree on ahead of time.
+            Alice encrypts using the key, Bob decrypts using the key, and (hopefully)
+	    Eve can't make sense of what's going on without that key!
+
+3. We're going to start off looking at a simple pencil-and-paper encryption scheme 
+   that goes back at least 2,000 years: Caesar Shift Encryption.
+   
+   a. Here's how it works.  The "key" is a letter of the alphabet (better not choose a,
+      as you'll see).  We fill in the table (see your handout) by putting the key
+      character under "a" and fill in with successive characters of the alphabet,
+      wrapping around back to the beginning after you've used z.  I'm going to start with
+      'c', why don't you follow along.
+   b. Now let's encrypt "stem". ...
+      Now let's decrypt "twngu". ...
+   c. Hopefully you all see how this works.  So to save time, instead of using pencil
+      and paper I've made this tool for you to use.  (Turn on Caesar Shift in cryptools)
+      tell them to switch over to the crytotools browser tab
+
+   d. If you go back to the message board, you'll see that I've paired everyone up.
+
+      /home/wcbrown/STEM/src/cryptodemo/printpairings.pl https://www.usnastem.net/set/msg/mb.html drbrown
+
+      I want you and your partner to act as Alice and Bob and send each other
+      messages that only your partner can read.  But before we can do this, what's
+      the problem we face?  Right!  How to agree on a secret key!  In zoom, we have
+      person-to-person chat enabled, so for this activity I want you to use that
+      this one time to share your secret key (which recall is a letter).  Then go
+      to the message board and send your encrypted message.  Note: please
+      preface the message with the name of your intended recipient.  That'll make
+      it easier to spot.
+
+      <Give folks time>
+
+4. Now let's switch from being Alices and Bobs to being Eve!  Is there any way we
+   could attack this encryption?
+
+   <lead them through to ... BRUTE FORCE ATTACK!>
+
+5. OK, our encryption scheme failed ... it's susceptible to Brute Force Attack.
+   We're going to switch back to being Alices and Bobs and try to figure out
+   what we can do to fix this flaw in our system.
+
+   a. We can repair this, but it's going to require changing our viewpoint
+      a bit.  Once we decide on a
+      particular key, our encryptor looks like this (draw a box with arrows).
+      A black box with an input and an output, and everytime we put the same
+      character in, we get the same character out.  Does anyone know what we
+      call this type of object in math/science/engineering ... a function!
+
+      now, of course, the thing about encryption functions is that they have
+      to have inverses ... otherwise you couldn't decrypt!  An invertible
+      function on a finite set like the alphabet is equivalent to a
+      reordering of the letters ... or, more technically, a permutation.
+
+      So if we ask how many possible encryption functions there are, we are
+      asking how many permutations of the 26 letters of the alphabet there
+      are.  Does anyone know how to figure that out?  26! show in wolframalpa
+
+      So there are 403291461126605635584000000 (403 septillion) possible
+      encryption functions and we're limiting ourselves to just 26?  We need
+      a bigger set of possible keys so brute force isn't feasible.
+
+   b. A natural thought is to encrypt twice, that gives two key characters
+      for a total not of 26 possible keys but 26^2 possible keys (676).  Big
+      improvement.
+      <set the chain encryption to visible>
+      If you look under the crypto demo tools, you'll see what that looks like.
+      Do example.  Show how a character works.  encrypt a short message.
+      Then bruteforce decrypt using Caesar shift.  Point out the problem.
+
+   c. Explain the mix function (note, no key!).  And show them shift,mix,shift
+      Give them the cipher text below and ask them about brute force!
+
+      key   : wn
+      plain : Meet me at the corner of first and main at ten.
+      cipher: Uqqb uq ob bhq pvceqc vi iscxb oej uose ob bqe.
+
+   d. If I did four shifts (with mix's in between) we get nearly 500K keys,
+      all of which give different encryption functions!  Still a long way
+      from 403 spetillion, but certainly enough keys that by hand brute
+      force would be ... well it'd take quite a while!
+
+6. So let's go back to being Eve. Let's suppose we've received the following
+   ciphertext which has been encrypted with four ceasar shifts with mixes
+   in between.
+
+Pxabubr wjsswb ndxad spb ebbwjdyt xr ujbat xe tlmp k ckd ckz gb xd pjt ejrts bdsbrjdy k dbjypgxlrpxxv, spjt srlsp jt tx abww ejfbv jd spb cjdvt xe spb tlrrxldvjdy ekcjwjbt spks pb jt mxdtjvbrbv kt spb rjypselw orxobrsz xe txcb xdb xr xspbr xe spbjr vklypsbrt. "Cz vbkr Cr. Gbddbs," tkjv pjt wkvz sx pjc xdb vkz, "pkub zxl pbkrv spks Dbspbrejbwv Okrn jt wbs ks wkts?" Cr. Gbddbs rbowjbv spks pb pkv dxs.
+
+NOTE for me: This came from pswd csit and four stage encrypt and plaintext below:
+However little known the feelings or views of such a man may be on his first entering a neighbourhood, this truth is so well fixed in the minds of the surrounding families that he is considered as the rightful property of some one or other of their daughters. "My dear Mr. Bennet," said his lady to him one day, "have you heard that Netherfield Park is let at last?" Mr. Bennet replied that he had not.
+
+   Brute force is out of the question.  But is there something else we could do?
+   <open up free map and letter frequencies in English>
+   If you look at the cryptools, we have another tool, which does two things.
+   1. we can build the encryption function up piece by piece, and
+   2. the tool counts the occurences of letters in the ciphertext and gives
+      a graph that shows what percentage of the ciphertext consists of each
+      letter.
+   <paste message in the ciphertext box ... ask them to do it to ... and click
+    the lock icon!>
+
+   Walk through at least a partial descryption using fequency analysis and
+   clever guesswork.
+
+7. Now let's return to being Alices and Bobs. Expanding the set of keys (and
+   by doing so the set of encryption functions) defeated Brute Force attacks,
+   which is great, but frequency ananlysis attacks defeat us.  Can we further
+   improve things in order to defeat fequency analysis?  The answer is yes,
+   but once again we're going to have to change our viewpoint a bit.
+   Instead of using our fancy chain-of-caesar-shifts-and-mixes to encrypt
+   plaintext characters, we will use it to *generate keys* which will be used
+   to do plain Caesar-shift encryption but with a separate key for each
+   character.  Here's how it works ...
+
+   a. <Open up last block>
+   b. demo: shift-mix-shift, key "of", plaintext "reader", ciphertext "guhviw".
+      Note: even though we have two e's and two r's in the plaintext, each
+            ciphertext character is unique.  We can't do frequency analysis.
+   c. Give them ciphertext below and key and see if they can figure out decrypt.
+
+       key: crk
+ plaintext: m e m e
+   counter: a b c d
+ keystream: i a l s
+ciphertext: u e x w
+
+
+   d. Show them what the ciphertext for the Pride and Prejudice text looks like and
+      how flat the frequencies of letters are.
+
+cmencrypt("yxr",'However little known the feelings or views of such a man may be on his first entering a neighbourhood, this truth is so well fixed in the minds of the surrounding families that he is considered as the rightful property of some one or other of their daughters. "My dear Mr. Bennet," said his lady to him one day, "have you heard that Netherfield Park is let at last?" Mr. Bennet replied that he had not.');
+
+Nuvwxyz bcdefg ijklm opq stuvwxyz bc efghi kl nopq s uvw yza cd fg ijk mnopq stuvwxyz b defghijklmnop, stuv xyzab de gh jklm opqrs uv xyz bcdef hi klm opqrstuvwxy abcdefgh jklm op rs uvwxyzabcd fg ijk mnopqrst vwxyzabc ef hijk mno qr tuvwx za cdefg ijklmnopq. "Ov xyza Wd. Ahijkl," pqrs uvw yzab de ghi klm opq, "uvwx zab defgh jklm Ipqrstuvwxy Ubcd fg ijk mn pqrs?" Qx. Ubcdef hijklmn pqrs uv xyz bcd.
+
+
+8. Finally ... show them the Navy Federal CU secure connection info and describe
+   AES_256_GCM
+
