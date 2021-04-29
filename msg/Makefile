@@ -39,7 +39,7 @@ status:
 	@ perl -e 'if (-e "secure") { print "* the password file is inaccessible except to instructor and webserver\n"; } else { print "* the password file is accessible internally and via the webserver\n"; }'
 
 init:	noescape insecure nohash fullwipe open
-	chmod 755 newacct.cgi login.cgi mb.cgi .htaccess Hasher.pm
+	chmod 755 newacct.cgi login.cgi mb.cgi .htaccess Hasher.pm pairings.cgi
 	chmod 644 newacct.html login.html
 	chmod 666 msgRAW pswd.txt mb.html
 	chmod 711 .
