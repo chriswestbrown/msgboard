@@ -26,7 +26,7 @@ fi
 
 cp -r "../modules/$modulename/$modulename" "/var/www/html/$basestring"
 pushd "/var/www/html/$basestring/$modulename"
-./install ../inst/adminshell.html
+./install "../inst/adminshell.html"
 popd
 
 echo "Module $modulename installed for instructor $basestring."
