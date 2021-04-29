@@ -15,7 +15,7 @@ clearCurrentTerminalLine = function() {
 //-- COMMANDS -------------------------------------------
 commandExec = new Object();
 commandExec["help"] = function(rest) {
-    return String(Object.keys(commandExec).sort()) + "\n";
+    return String(Object.keys(commandExec).sort()) + "\r\n";
 }
 commandExec["md5"] = function(rest) {
     return CryptoJS.MD5(rest).toString() + "\r\n";
