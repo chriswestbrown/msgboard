@@ -109,11 +109,10 @@ print MBP <<END;
     <script type="text/javascript">
     setInterval(function() {
 	if (document.forms.namedItem('mbin').msg.value == "")
-	    document.location="mb.html"; },9000);
+            document.location.reload(true); },9000);
     </script>
 </head>
 <body>
-<!--<script type="text/javascript">window.location.reload(true);</script>-->
 <h1>Message Board</h1>
 $contents
 <hr>
