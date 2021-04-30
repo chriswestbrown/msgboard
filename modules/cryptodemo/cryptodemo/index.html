@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Cryptodemo</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="cdfuncs.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+  <script src="cdfuncs.js"></script>
+</head>
+
+<body>
+
+  <script type="text/javascript">
+  /*
+    VisManager
+    ----------
+    - registerObj
+  */
+  var visibilityRegistry = {};
+  var registerVisibility = function(name,obj) {
+    if (visibilityRegistry[name] == undefined) {
+      visibilityRegistry[name] = [];
+    }
+    visibilityRegistry[name].push(obj);
+  }
+  var modifyVisibility = function(obj) {
+    if (obj["visibility"] == undefined) { return; }
+    for(key in obj.visibility) {
+      let target = visibilityRegistry[key];
+      let value = obj["visibility"][key];
+      if (target != undefined && value.match(/on|off/) ) {
+            target.map((x)=>x.setVis(value));
+      }
+    }
+  }
+  document.addEventListener("DOMContentLoaded",function() {
+  const params = new URLSearchParams(window. location. search);
+  let staticFlag = params.has('static') && params.get('static') == "yes";
+  if (staticFlag || document.location.protocol == "file:") {
+      return;
+    }
+    let ini = { "visibility":
+    {"ceasar":"off","chained":"off","freemap":"off","engfreq":"off"} };
+    modifyVisibility(ini);
+    const url = 'vis.txt';
+    let myHeaders = new Headers();
+    myHeaders.append('pragma', 'no-cache');
+    myHeaders.append('cache-control', 'no-cache');
+    var myInit = {
+      method: 'GET',
+      headers: myHeaders,
+    };
+    const updateVis = function() {
+        fetch(url,myInit)
+          .then(data => {
+            return data.text()
+          })
+          .then(res => { modifyVisibility(JSON.parse(res))});
+      };
+      updateVis();
+    setInterval(updateVis, 3000);
+  });
+  </script>
+
+  <div style="border-bottom: 4px solid #73AD21; color: #73AD21">
+    <b class="secTitle">SETSail Crypto Activity Tools</b>
+  </div>
+  <br>
+
+  <!-- Caesar Shift -->
+  <script type="text/javascript">
+    var CB1 = createShiftFunctionBox();
+    registerVisibility("caesar.funbox",addVisibilitySetter(CB1,CB1.element));
+    var V1 = createSingleCharMapViewNTB(CB1);
+    var X1 = createCharMapView(V1, false);
+    var cssec = createSection("Caesar Shift", X1.element);
+    document.body.appendChild(cssec.element);
+    registerVisibility("caesar",cssec);
+    let G1 = V1.getVisGroup().map((x)=>addVisibilitySetter(x,x.element));
+    G1.map((x)=>registerVisibility("caesar.arrows",x));
+    let G2 = X1.getVisGroup().map((x)=>addVisibilitySetter(x,x.element));
+    G2.map((x)=>registerVisibility("caesar.textareas",x));
+  </script>
+
+
+  <br>
+
+
+  <script type="text/javascript">
+    var SB = [createShiftFunctionBox(), createShiftFunctionBox()];
+
+    var ib = document.createElement("input");
+    ib.value = "shift, shift";
+    ib.size="36";
+    var sp = document.createElement("span");
+    sp.innerHTML = "Chained (shift &amp; mix) ";
+    sp.appendChild(ib);
+
+    var CB = createChainedFunctionBox(SB);
+    var V3 = createSingleCharMapViewNTB(CB);
+    var X3 = createCharMapView(V3, false);
+
+    let changeit = function() {
+      let str = ib.value.split(/\s*,\s*|\s+/);
+      SB = str.map((x) => x == "shift" ?
+        createShiftFunctionBox() : createMixFunctionBox());
+      //cse3sec.element.removeChild(X3.element);
+      CB = createChainedFunctionBox(SB);
+      V3 = createSingleCharMapViewNTB(CB);
+      X3 = createCharMapView(V3, false);
+      cse3sec.setBody(X3.element);
+      //cse3sec.element.appendChild(X3.element);
+    };
+    ib.addEventListener('change', changeit);
+
+    var cse3sec = createSection(sp, X3.element);
+    //cse2sec.element.style.transform="scale(0.7)";
+    document.body.appendChild(cse3sec.element);
+    //document.body.appendChild(CB.getMap().element);
+    registerVisibility("chained",cse3sec);
+  </script>
+
+  <br>
+
+  <script type="text/javascript">
+    var UM = createCharMapGeneric(createIncompleteCharMap(), "free");
+    //var UM = createCharMapMix(createIncompleteCharMap());
+    var MB = createMixFunctionBox(UM);
+    //MB.testSetMap(UM);
+    var V4 = createSingleCharMapViewNTB(MB);
+    var X4 = createCharMapView(V4,true,true);
+    //var fb = createMixFunctionBox(); var V3 = createSingleCharMapViewNTB(fb);
+    var testsec = createSection("Free map", X4.element);
+    //cse2sec.element.style.transform="scale(0.7)";
+    document.body.appendChild(testsec.element);
+    registerVisibility("freemap",testsec);
+  </script>
+
+  <br>
+
+  <script type="text/javascript">
+    /** ENGLISH FREQUENCY COUNT **/
+    var efbody = document.createElement("div");
+    efbody.style = "position: relative; border: 3px solid #73AD21; height: 200px;";
+    var engFreqCount = createEnglishFrequencyCount();
+    setPosition(engFreqCount, [10, 10]);
+    efbody.appendChild(engFreqCount.element);
+    var efsec = createSection("Letter Frequencies in English", efbody);
+    document.body.appendChild(efsec.element);
+    registerVisibility("engfreq",efsec);
+  </script>
+
+  <br>
+
+
+  <script type="text/javascript">
+    var makeWrapper = function(V5) {
+      let C5 = document.createElement("div");
+      C5.style.position = "relative";
+      C5.style.height = V5.getDims()[0] + "px";
+      C5.style.width = V5.getDims()[1] + "px";
+      //C5.style.border = "3px solid #73AD21";
+      C5.appendChild(V5.element);
+      return C5;
+    }
+    var CB5 = createShiftFunctionBox();
+    var V5 = createSingleCharMapViewNTB(CB5);
+    var C5 = makeWrapper(V5);
+    {
+      let l1 = createSimpleLabel("plaintext");
+      l1.setPosition("-2px","-2px");
+      C5.appendChild(l1.element);
+      let l2 = createSimpleLabel("ciphertext");
+      l2.setPosition("790px","-2px");
+      C5.appendChild(l2.element);
+    }
+
+    var SB6 = [createShiftFunctionBox(), createMixFunctionBox(),
+        createShiftFunctionBox(), createMixFunctionBox(),
+        createShiftFunctionBox()];
+    var CB6 = createChainedFunctionBox(SB6);
+    var V6 = createSingleCharMapViewNTB(CB6);
+    var C6 = makeWrapper(V6);
+    {
+      let h = V6.getDims()[0]/2 + 8;
+      let l1 = createSimpleLabel("counter");
+      l1.setPosition("-2px",(h)+"px");
+      C6.appendChild(l1.element);
+      let l2 = createSimpleLabel("key for<br>Caesar Shift");
+      l2.setPosition("790px",(h)+"px");
+      C6.appendChild(l2.element);
+    }
+
+
+
+    var combo = document.createElement("div");
+    combo.style.border = "3px solid #73AD21";
+    combo.style.padding="15px";
+
+    /* Setting up notes so that the other elements don't
+       get in the way of selecting the notes is ... difficult! */
+    var notes = document.createElement("div");
+    notes.style.float="right";
+    notes.style.width="300px";   
+    notes.style.height="200px";
+    notes.innerHTML = "<b>Notes</b><br>";
+    var ntaWrapper = document.createElement("div");
+    ntaWrapper.style.position="relative";
+    ntaWrapper.style.width="100%";
+    ntaWrapper.style.height="100%";
+    var nta = document.createElement("textarea");
+    nta.style.width="100%";
+    nta.style.height="100%";
+    nta.style.position="absolute";
+    nta.style.zIndex="300";
+    nta.style.left="0px";
+    nta.style.top="0px";
+    ntaWrapper.appendChild(nta);
+    notes.appendChild(ntaWrapper);
+    combo.appendChild(notes);
+
+    /* Now add the other (non-Notes) elements! */
+    combo.appendChild(C5);
+    var spacer = document.createElement("div");
+    spacer.style.height = "30px";
+    combo.appendChild(spacer);
+    combo.appendChild(C6);
+    
+    var testsec6 = createSection("Counter mode", combo);
+    document.body.appendChild(testsec6.element);
+    registerVisibility("countermode",testsec6);
+
+  </script>
+
+
+
+<script type="text/javascript">
+var cmencrypt = function(key,plaintext) {
+  let ciphertext = plaintext.split("");
+  let keytext = plaintext.split("");
+  for(let i = 0; i < plaintext.length; i++) {
+    keytext[i] = CB.getMap().map(String.fromCharCode((i%26) + 97));
+    k = baseoffset(keytext[i])[1];
+    p = plaintext[i];
+    bo = baseoffset(p);
+    c = bo[1] == -1 ? p : String.fromCharCode(bo[0] + (bo[0] + k)%26);
+    ciphertext[i] = c;
+  }
+  return ciphertext.join("");
+};
+</script>
+</body>
+
+</html>
