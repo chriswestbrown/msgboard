@@ -5,7 +5,7 @@
 commandExec["cdconf"] = function(rest) {
     keyboardLockOut = true;
     const http = new XMLHttpRequest();
-    var url = "cryptodemo/cdconfig.cgi?opt="+encodeURI(rest);
+    var url = "../cryptodemo/cdconfig.cgi?opt="+encodeURI(rest);
     http.onreadystatechange=(e)=>{
 	if (http.readyState == 4 && http.status == 200) {
 	    var resp = http.responseText.trimEnd();

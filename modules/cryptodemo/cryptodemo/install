@@ -15,7 +15,7 @@ END
 }
 my $shellf = $ARGV[0];
 my $tmpname = "tmpfile.html";
-my $commln = '    <script src="cryptodemo/cdinst.js"></script>';
+my $commln = '    <script src="../cryptodemo/cdinst.js"></script>';
 
 # open files
 open(my $fin, '<:encoding(UTF-8)', $shellf)
