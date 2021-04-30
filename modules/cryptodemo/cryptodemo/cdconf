@@ -1,0 +1,73 @@
+#!/usr/bin/perl
+
+########################################################
+# cdconf [reset|next|all]
+########################################################
+use strict;
+use warnings;
+
+my %vis = ( );
+
+# Read vis.txt
+my $filename = 'vis.txt';
+open(my $fh, '<:encoding(UTF-8)', $filename)
+    or die "Could not open file '$filename' $!";
+my $i = 0;
+my @K = [];
+while(my $row = <$fh>) {
+    if ($row =~ /"([^"]+)":"([^"]+)"/) {
+	$vis{$1} = $2;
+	$K[$i] = $1;
+	$i++;
+    }
+}
+close $fh;
+
+# process command
+my $err = 0;
+if (scalar(@ARGV) > 0) {
+    if ($ARGV[0] eq "reset") {
+	for(keys %vis) { $vis{$_} = "off"; }
+    }
+    elsif ($ARGV[0] eq "all") {
+	for(keys %vis) { $vis{$_} = "on"; }
+    }
+    elsif($ARGV[0] eq "next") {
+	my $done = 0;
+	for(my $j = 0; !$done && $j < $i; $j++) {
+	    if ($vis{$K[$j]} eq "off") {
+		$vis{$K[$j]} = "on";
+		$done = 1;
+	    }
+	}
+    }
+    else {
+	print "Unknown option '".$ARGV[0]."'.\n";
+	$err = 1;
+    }
+}
+
+if (scalar(@ARGV) == 0 || $err) {
+    print <<END;
+usage: cdconf [reset|next|all]    
+END
+}
+else {
+    # rewrite vis
+    open(my $fo, '>:encoding(UTF-8)', $filename)
+	or die "Could not open file '$filename' $!";
+    print $fo "{\n  \"visibility\": {\n";
+    my $tmp = "    ";
+    for(my $j = 0; $j < $i; $j++) {
+	print $fo "$tmp\"$K[$j]\":\"$vis{$K[$j]}\"";
+	$tmp = ",\n    ";
+    }
+    print $fo "\n";
+    print $fo "  }\n}\n";
+    close($fo);
+}
+
+# output settings to screen
+for(my $j = 0; $j < $i; $j++) {
+    print "$K[$j]:$vis{$K[$j]}\n";
+}

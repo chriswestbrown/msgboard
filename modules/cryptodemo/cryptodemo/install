@@ -1,0 +1,37 @@
+#!/usr/bin/perl
+
+# Set permissions
+`chmod +x cdconf`;
+`chmod +x cdconfig.cgi`;
+
+# Add cdconf to adminshell
+if (scalar(@ARGV) == 0) {
+    print <<END;
+usage: install <shell-html-file>
+
+For example: ./install ../inst/adminshell.html
+END
+    exit(1);
+}
+my $shellf = $ARGV[0];
+my $tmpname = "tmpfile.html";
+my $commln = '    <script src="cryptodemo/cdinst.js"></script>';
+
+# open files
+open(my $fin, '<:encoding(UTF-8)', $shellf)
+    or die "Could not open file '$shellf' $!";
+open(my $fout, '>:encoding(UTF-8)', $tmpname)
+    or die "Could not open file '$tmpname' $!";
+
+# create new shellf
+while(<$fin>) {
+    if ($_ =~ /<!-- END LOAD COMMAND PLUGINS -->/) {
+	print $fout $commln."\n";
+    }
+    print $fout $_;
+}
+close($fin);
+close($fout);
+`mv -f $tmpname $shellf`;
+
+

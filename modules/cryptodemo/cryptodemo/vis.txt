@@ -1,0 +1,9 @@
+{
+  "visibility": {
+    "caesar":"on",
+    "chained":"on",
+    "freemap":"on",
+    "engfreq":"on",
+    "countermode":"on"
+  }
+}

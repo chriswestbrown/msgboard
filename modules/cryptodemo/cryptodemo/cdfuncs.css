@@ -1,0 +1,169 @@
+body {
+  font-size: 14px;
+  font-family: arial, sans-serif;
+}
+
+table.cmap {
+  border-style: none;
+  border-collapse: collapse;
+  border-width: 1pt;
+  border-color: #000084;
+}
+
+table.cmap td {
+  text-align: center;
+  font-family: monospace;
+  border-style: solid;
+  border-width: 1pt;
+  padding-left: 0pt;
+  padding-right: 0pt;
+  height: 14pt;
+  width: 13pt;
+}
+
+div.ctile {
+  background-image: radial-gradient(circle, white, silver);
+  text-align: center;
+  font-family: monospace;
+  padding-left: 0pt;
+  padding-right: 0pt;
+  height: 16px;
+  width: 14.0px;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 2pt;
+  margin-left: auto;
+  margin-right: auto;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  cursor: default;
+}
+
+table.cmapc {
+  border-style: none;
+  border-collapse: collapse;
+  border-width: 1pt;
+  border-color: #000084;
+}
+
+table.cmapc td {
+  text-align: center;
+  font-family: monospace;
+  border-style: solid;
+  border-width: 1pt;
+  padding-left: 0pt;
+  padding-right: 0pt;
+  height: calc(12pt + 1px);
+  width: 13pt;
+}
+
+table.cmapx {
+  border-style: none;
+  border-collapse: collapse;
+}
+
+table.cmapx td {
+  text-align: right;
+  font-family: monospace;
+  padding-left: 0pt;
+  padding-right: 0pt;
+  height: 13pt;
+}
+
+div.funbox {
+  position: absolute;
+  /*left:100px;
+  top: 50px;*/
+  bottom: auto;
+  text-align: center;
+  padding-left: 4pt;
+  padding-right: 4pt;
+  border-style: solid;
+  border-width: 3px;
+  border-radius: 5pt;
+  border-color: gray;
+  display:inline-block;
+  width: 634px;
+  /*min-width:48px;
+  min-height:48px;*/
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  background-color: #fbfbfb;
+  cursor: default;
+}
+
+.charbox {
+  position: absolute;
+  height: 13pt;
+  width:13pt;
+  text-align:center;
+  border-style: solid;
+  border-width: 1px;
+  background-color: white;
+}
+.textareabox {
+  position: absolute;
+  font-family: monospace;
+  width: 690px;
+  height: 84px; /*48px;*/
+  text-align:left;
+  resize: none;
+}
+
+.lockedTextArea {
+  position: absolute;
+  font-family: monospace;
+  font-size: 13px;
+  /*width: 88ch;
+  height: 4em;*/
+  width: 694px;
+  height: 84px; /*48px;*/
+  text-align:left;
+  resize: none;
+  border-style: solid;
+  border-width: 1px;
+  overflow-y: scroll;
+}
+
+div.svgcontainer {
+  position: absolute;
+  left:0px;
+  top:0px;
+}
+div.freqCount {
+  position: absolute;
+}
+.secTitle {
+  font-weight: bold;
+  font-family:sans-serif;
+}
+
+.baseLabel {
+  position: absolute;
+  display: table;
+  /*border: 1px solid red;*/
+}
+
+.resetButton {
+  background-image: radial-gradient(circle, white, silver);
+  position: absolute;
+  z-index: 10;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  margin: 0px;
+  padding: 0px;
+  border: 1px solid black;
+  height: 14px;
+  width: 32px;
+  vertical-align: top;
+  text-align:center;
+  font-size: 12px;
+  border-radius: 2pt;
+  cursor: default;
+}
