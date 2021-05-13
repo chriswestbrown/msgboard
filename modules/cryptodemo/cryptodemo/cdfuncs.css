@@ -168,6 +168,5 @@ div.freqCount {
   cursor: default;
 }
 
-#notes {
-    border: 3px solid black;
-}
+#notes { border: 3px solid black; box-shadow: 5px 5px 3px #aaaaaaaa; }
+#notesheader { cursor: move; }
