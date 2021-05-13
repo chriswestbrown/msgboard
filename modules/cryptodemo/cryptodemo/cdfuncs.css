@@ -167,3 +167,7 @@ div.freqCount {
   border-radius: 2pt;
   cursor: default;
 }
+
+#notes {
+    border: 3px solid black;
+}

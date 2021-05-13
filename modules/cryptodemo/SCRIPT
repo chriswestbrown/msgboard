@@ -1,7 +1,5 @@
 1. SETUP - things done before activity
    a. adminshell.html in tab
-      Reset cryptodemo page is reset to blank
-      * cdconf reset
       msg board - set up so that everyone is escaped except first account
       * mbconf init secure escapeall
       * create 'drbrown' account as first account on message board
@@ -12,18 +10,18 @@
    b. message board in tab
    c. stemcryptodemo website in tab
    d. wolfram alpha in tab
+   e. file on webserver for controlling visibility up
    f. text file with text for copy and paste up.
 
 LINKS:
 * stemcryptodemo: https://www.usnastem.net/set/cryptodemo/
 * message board : https://www.usnastem.net/set/msg/mb.html
-* admin shell   : https://www.usnastem.net/set/inst/adminshell.html
+* admin shell   : https://www.usnastem.net/set/adminshell.html
 
 2. ON ARRIVAL
    NOTE: Communicate ahead of time that they have to be prepared to flip between three
          Windows.
 	 Zoom window / browser-message-board / browser-cryptotools
-	 And warn them not to confuse *my screenshare* of these pages, with their pages.
 
    NOTE: In Zoom, use the share/advanced/secondcamera option to show the whiteboard.
          NOTE: *must* start with screenshare, and then switch to sharing second camera,
@@ -61,12 +59,9 @@ LINKS:
       Now let's decrypt "twngu". ...
    c. Hopefully you all see how this works.  So to save time, instead of using pencil
       and paper I've made this tool for you to use.  (Turn on Caesar Shift in cryptools)
-      tell them to switch over to the crytotools browser tab
+      tell them to switch over to the cryptotools browser tab
 
-   d. If you go back to the message board, you'll see that I've paired everyone up.
-
-      /home/wcbrown/STEM/src/cryptodemo/printpairings.pl https://www.usnastem.net/set/msg/mb.html drbrown
-
+   d. I'm going to partner you up (in a minute!), and when I do,
       I want you and your partner to act as Alice and Bob and send each other
       messages that only your partner can read.  But before we can do this, what's
       the problem we face?  Right!  How to agree on a secret key!  In zoom, we have
@@ -75,6 +70,16 @@ LINKS:
       to the message board and send your encrypted message.  Note: please
       preface the message with the name of your intended recipient.  That'll make
       it easier to spot.
+
+      NOTE: give the command 'mbpairs drbrown' in the adminshell to get the message
+            you'll copy&paste into the message board.
+
+      If you go back to the message board, you'll see that I've paired everyone up.
+      I want the first-listed person to choose a letter as your "key" and send a
+      private zoom chat message to your partner with the key value.  After that, all
+      communication must be done on the message board!
+
+
 
       <Give folks time>
 
@@ -127,14 +132,47 @@ LINKS:
       from 403 spetillion, but certainly enough keys that by hand brute
       force would be ... well it'd take quite a while!
 
+      ### NOTE: two stage (shift, mix, shift) key = lq
+      plaintext: Stem is at the root of our modern world.
+      plaintext: Kven pk gv vce ummv mb mju nmaeus imura.
+
 6. So let's go back to being Eve. Let's suppose we've received the following
    ciphertext which has been encrypted with four ceasar shifts with mixes
    in between.
 
+TEXT 1: Pride and Prejudice
+**************************************************************************
 Pxabubr wjsswb ndxad spb ebbwjdyt xr ujbat xe tlmp k ckd ckz gb xd pjt ejrts bdsbrjdy k dbjypgxlrpxxv, spjt srlsp jt tx abww ejfbv jd spb cjdvt xe spb tlrrxldvjdy ekcjwjbt spks pb jt mxdtjvbrbv kt spb rjypselw orxobrsz xe txcb xdb xr xspbr xe spbjr vklypsbrt. "Cz vbkr Cr. Gbddbs," tkjv pjt wkvz sx pjc xdb vkz, "pkub zxl pbkrv spks Dbspbrejbwv Okrn jt wbs ks wkts?" Cr. Gbddbs rbowjbv spks pb pkv dxs.
 
 NOTE for me: This came from pswd csit and four stage encrypt and plaintext below:
 However little known the feelings or views of such a man may be on his first entering a neighbourhood, this truth is so well fixed in the minds of the surrounding families that he is considered as the rightful property of some one or other of their daughters. "My dear Mr. Bennet," said his lady to him one day, "have you heard that Netherfield Park is let at last?" Mr. Bennet replied that he had not.
+
+
+TEXT 4: Example from the game clue!
+##################################
+Key: rker
+This committee was convened to discover the identity of the murderer.  We worked hard over the course of many weeks to investigate all aspects of the crime and take into account the many disparate pieces of evidence uncovered in the field.  After a thorough examination of all this material, and consultation with a wide array of experts, we are able to announce the identity of the killer:  it was Mister Green in the garden with a knife.
+
+Cgzn ptiizcchh umn ptdlhdha ct aznptlhe cgh zahdczcx tr cgh ijeahehe.  Uh uteoha gmea tlhe cgh ptjenh tr imdx uhhon ct zdlhnczsmch mbb mnfhpcn tr cgh pezih mda cmoh zdct mpptjdc cgh imdx aznfmemch fzhphn tr hlzahdph jdptlheha zd cgh rzhba.  Mrche m cgtetjsg hwmizdmcztd tr mbb cgzn imchezmb, mda ptdnjbcmcztd uzcg m uzah meemx tr hwfhecn, uh meh mkbh ct mddtjdph cgh zahdczcx tr cgh ozbbhe:  zc umn Iznche Sehhd zd cgh smeahd uzcg m odzrh.
+##################################3
+
+
+TEXT 3: Article about white sox pitching
+**************************************************************************
+Lppwdrkgt bw bsy nwmb dypygb MA Glbkwg Dylpbm modfyu, 93% wj Xskby Mwi jlgm ldy pwgjkrygb bsy byln km sylryr kg bsy dktsb rkdypbkwg. Bslb’m oh jdwn 80% clmb xyyq. Jwd lgu byln bw jkgr moppymm bsyu gyyr bw slfy jlkbs kg bsykd hkbpskgt mbljj. Gyldcu lcc wj Xskby Mwi jlgm mlkr bsyu ldy pwgjkrygb kg bsy byln’m hkbpsydm. Lcdylru bskm uyld bsydy slfy ayyg mwny yipyhbkwglc hkbpskgt hydjwdnlgpym ldwogr bsy cyltoy. Kg bsy bkny mhlg wj cymm bslg l xyyq, bxw gw-skbbydm xydy bsdwxg. Bsyu xydy bsy 306bs lgr 307bs gw-skbbydmbsdwxg kg bsy cyltoy’m skmbwdu, lgr bsy myfygbs lgr yktsbs bsdwxg mkgpy bsy mbldb wj bsy 2019 mylmwg. Rymhkby bsy tdwxkgt dytocldkbu wj bsy wobmblgrkgt hydjwdnlgpym, l flmb nlzwdkbu wj NCA jlgm ayckyfy l hkbpskgt l gw-skbbyd km mbkcc l skmbwdkp lppwnhckmsnygb.
+
+NOTE for me: This came from pswd itcs and four stage encrypt and plaintext below:
+According to the most recent SB Nation Reacts survey, 93% of White Sox fans are confident the team is headed in the right direction. That’s up from 80% last week. For any team to find success they need to have faith in their pitching staff. Nearly all of White Sox fans said they are confident in the team’s pitchers. Already this year there have been some exceptional pitching performances around the league. In the time span of less than a week, two no-hitters were thrown. They were the 306th and 307th no-hitters thrown in the league’s history, and the seventh and eighth thrown since the start of the 2019 season. Despite the growing regularity of the outstanding performances, a vast majority of MLB fans believe a pitching a no-hitter is still a historic accomplishment.
+
+
+TEXT 2: Opening crawl from Star Wars Episode 1 (This is really hard!)
+**************************************************************************
+Bodnwkc slm ygtocjyr bsy Tlclpbkp Dyhoackp. Bsy blilbkwg wj bdlry dwobym bw wobcukgt mbld mumbynm km kg rkmhoby. Swhkgt bw dymwcfy bsy nlbbyd xkbs l acwpqlry wj rylrcu albbcymskhm, bsy tdyyru Bdlry Jyrydlbkwg slm mbwhhyr lcc mskhhkgt bw bsy mnlcc hclgyb wj Glaww. Xskcy bsy pwgtdymm wj bsy Dyhoackp ygrcymmcu ryalbym bskm lcldnkgt pslkg wj yfygbm, bsy Mohdyny Pslgpyccwd slm mypdybcu rkmhlbpsyr bxw Zyrk Qgktsbm, bsy toldrklgm wj hylpy lgr zombkpy kg bsy tlcliu, bw mybbcy bsy pwgjckpb...
+
+NOTE for me: This came from pswd itcs and four stage encrypt and plaintext below:
+Turmoil has engulfed the Galactic Republic. The taxation of trade routes to outlying star systems is in dispute. Hoping to resolve the matter with a blockade of deadly battleships, the greedy Trade Federation has stopped all shipping to the small planet of Naboo. While the congress of the Republic endlessly debates this alarming chain of events, the Supreme Chancellor has secretly dispatched two Jedi Knights, the guardians of peace and justice in the galaxy, to settle the conflict...
+
+
 
    Brute force is out of the question.  But is there something else we could do?
    <open up free map and letter frequencies in English>
@@ -171,6 +209,14 @@ However little known the feelings or views of such a man may be on his first ent
  keystream: i a l s
 ciphertext: u e x w
 
+ANOTHER EXAMPLE
+
+       key: ymr
+ plaintext: f o o d
+   counter: a b c d
+ keystream: b y f j
+ciphertext: g m t m 
+
 
    d. Show them what the ciphertext for the Pride and Prejudice text looks like and
       how flat the frequencies of letters are.
@@ -183,3 +229,10 @@ Nuvwxyz bcdefg ijklm opq stuvwxyz bc efghi kl nopq s uvw yza cd fg ijk mnopq stu
 8. Finally ... show them the Navy Federal CU secure connection info and describe
    AES_256_GCM
 
+##################################
+Example from the game clue!
+Key: rker
+This committee was convened to discover the identity of the murderer.  We worked hard over the course of many weeks to investigate all aspects of the crime and take into account the many disparate pieces of evidence uncovered in the field.  After a thorough examination of all this material, and consultation with a wide array of experts, we are able to announce the identity of the killer:  it was Mister Green in the garden with a knife.
+
+Cgzn ptiizcchh umn ptdlhdha ct aznptlhe cgh zahdczcx tr cgh ijeahehe.  Uh uteoha gmea tlhe cgh ptjenh tr imdx uhhon ct zdlhnczsmch mbb mnfhpcn tr cgh pezih mda cmoh zdct mpptjdc cgh imdx aznfmemch fzhphn tr hlzahdph jdptlheha zd cgh rzhba.  Mrche m cgtetjsg hwmizdmcztd tr mbb cgzn imchezmb, mda ptdnjbcmcztd uzcg m uzah meemx tr hwfhecn, uh meh mkbh ct mddtjdph cgh zahdczcx tr cgh ozbbhe:  zc umn Iznche Sehhd zd cgh smeahd uzcg m odzrh.
+##################################3

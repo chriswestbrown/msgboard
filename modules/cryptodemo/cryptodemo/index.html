@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="cdfuncs.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
   <script src="cdfuncs.js"></script>
+  <script src="cwbutils.js"></script>
 </head>
 
 <body>
@@ -201,22 +202,30 @@
     /* Setting up notes so that the other elements don't
        get in the way of selecting the notes is ... difficult! */
     var notes = document.createElement("div");
-    notes.style.float="right";
+    notes.id="notes";
+    notes.style.position="absolute";
+    notes.style.right="0px";
+    notes.style.top="0px";
     notes.style.width="300px";   
     notes.style.height="200px";
-    notes.innerHTML = "<b>Notes</b><br>";
+    notes.style.zIndex="300";
+    var notesheader = document.createElement("div");
+    notesheader.style.height="18px";
+    notesheader.innerHTML = "<b>Notes</b>";
+    notesheader.style.backgroundColor="#f2f5f3";
+    notesheader.id="notesheader";
     var ntaWrapper = document.createElement("div");
     ntaWrapper.style.position="relative";
-    ntaWrapper.style.width="100%";
-    ntaWrapper.style.height="100%";
+    ntaWrapper.style.width="294px";
+    ntaWrapper.style.height="176px";
     var nta = document.createElement("textarea");
-    nta.style.width="100%";
-    nta.style.height="100%";
+    nta.style.width="294px";
+    nta.style.height="176px";
     nta.style.position="absolute";
-    nta.style.zIndex="300";
     nta.style.left="0px";
     nta.style.top="0px";
     ntaWrapper.appendChild(nta);
+    notes.appendChild(notesheader);
     notes.appendChild(ntaWrapper);
     combo.appendChild(notes);
 
@@ -250,6 +259,16 @@ var cmencrypt = function(key,plaintext) {
   return ciphertext.join("");
 };
 </script>
+
+<script type="text/javascript">
+ domready(function () {
+  let notes = document.getElementById("notes");
+  dragElement(notes);
+  notes.style.top = (combo.offsetTop + 4) + "px";
+  notes.style.left = (combo.offsetWidth - notes.offsetWidth + 4) + "px";
+  });
+</script>
+
 </body>
 
 </html>
