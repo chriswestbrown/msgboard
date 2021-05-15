@@ -1,0 +1,13 @@
+wcbrown@wrk1064243govt:~/temp/sql$ sqlite3 myfirst.db
+SQLite version 3.22.0 2018-01-22 18:45:57
+Enter ".help" for usage hints.
+sqlite> CREATE TABLE MYTAB (
+   ...> pair TEXT NOT NULL,
+   ...> msg1 TEXT,
+   ...> msg2 TEXT
+   ...> );
+sqlite> INSERT INTO MYTAB (pair) VALUES ('joe bob');
+sqlite> UPDATE MYTAB SET msg1 = 'foobar' WHERE pair = 'joe bob';
+sqlite> SELECT * FROM MYTAB;
+joe bob|foobar|
+

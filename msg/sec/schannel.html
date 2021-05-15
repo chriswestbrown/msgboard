@@ -1,0 +1,121 @@
+<!doctype html>
+  <html>
+    <head>
+      <style>
+	body {
+	padding: 15px;
+	font-size: 12pt;
+	font-family: san serif;
+	background-color: #444444;
+	color: #a6ff7d;
+	}
+	.wrap {
+	padding: 15px;
+	border: 4px solid red;
+	border-radius: 25px;
+	width: 850px;
+	}
+	table {
+	border-collapse: collapse;
+	border: 2px solid #a6ff7d;
+	}
+	td { 	border: 2px solid #a6ff7d; }
+	.name { width: 12em; }
+	.nn { 	border: 2px solid #a6ff7d; padding-left: 2px; padding-right: 2px; }
+      </style>
+    </head>
+
+    <body>
+
+      <div class="wrap">
+      <h2>Secret Channel (	You are <span class="nn" id="iam"></span>.  Your partner
+	is <span class="nn" id="pis"></span>.
+	)</h2>
+      
+      <p>
+	<table>
+	  <tr>
+	    <td><b>name</b></td>
+	    <td><b>most recent message</b></td>
+	  </tr>
+      <tr>
+	<td><div class="name" id="n1">name</div></td>
+	<td><input id="m1" type="text" size="70" disabled="true"></input></td>
+      </tr>
+      <tr>
+	<td><div class="name" id="n2">name</div></td>
+	<td><input id="m2" type="text" size="70" disabled="true"></input></td>
+      </tr>
+    </table>
+      </p>
+
+      <p>Message to send: <input id="mymsg" type="text" size="70"></input><button id="myb">send</button></p>
+      </div>
+      
+      <script type="text/javascript">
+	var updateFailed = false;
+      var enable = function(id,n1,n2,m1,m2) {
+      document.getElementById('n1').innerHTML = decodeURI(n1);
+      document.getElementById('n2').innerHTML = decodeURI(n2);
+      document.getElementById("m1").value = decodeURI(m1);
+      document.getElementById("m2").value = decodeURI(m2);
+      document.getElementById("iam").innerHTML = decodeURI(id == 1 ? n1 : n2);
+      document.getElementById("pis").innerHTML = decodeURI(id == 1 ? n2 : n1);
+      //document.getElementById("b"+id).style.visibility="visible";
+      //document.getElementById("m"+id).disabled=false;
+      //document.getElementById("m"+id).focus();
+      //document.getElementById("m" + (id == 1 ? 2 : 1)).value = decodeURI(id == 1 ? m2 : m1);
+      };
+      
+      var update = function() {
+      const http = new XMLHttpRequest();
+      var url = "fetch.cgi";
+      http.onreadystatechange=(e)=>{
+        if (http.readyState == 4 && http.status == 200) {
+        var resp = http.responseText.trimEnd();
+        console.log(resp);
+        var obj = JSON.parse(resp);
+        console.log(obj);
+        enable(obj.myid,obj.n1,obj.n2,obj.m1,obj.m2);	
+	}
+	else { updateFailed = false; }	
+      }    
+      http.open("GET",url);
+      http.responseType='text';
+      http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+      http.send();
+      }
+
+      var sendmesg = function(msg,whenDone) {
+      console.log("sendmesg called with : " + msg + "\n");
+      const http = new XMLHttpRequest();
+      var url = "sendmsg.cgi";
+      http.onreadystatechange=(e)=>{
+        if (http.readyState == 4 && http.status == 200) {
+      var resp = http.responseText.trimEnd();
+      console.log("returned from sendmsg: " + resp);
+      whenDone();
+      }
+      }
+      http.open("POST",url,true);
+      http.responseType='text';
+      //Send the proper header information along with the request
+      http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+      var params = encodeURI("msg=" + encodeURI(msg));
+      http.send(params);
+      }
+
+      // This is the stuff that actually happens
+      {
+      let b = document.getElementById("myb");
+      let m = document.getElementById("mymsg");
+      b.addEventListener('click',function() { sendmesg(m.value,function() {m.value=""; update (); }); });
+      let foo = function(){ update(); if (!updateFailed) { setTimeout(foo,5000); } };
+      foo();
+      document.getElementById("mymsg").focus();
+      }
+      
+    </script>
+    
+    </body>
+  </html>
