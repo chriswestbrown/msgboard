@@ -40,16 +40,16 @@
 	  </tr>
       <tr>
 	<td><div class="name" id="n1">name</div></td>
-	<td><input id="m1" type="text" size="70" disabled="true"></input></td>
+	<td><input id="m1" type="text"  style="width: 620px;" disabled="true"></input></td>
       </tr>
       <tr>
 	<td><div class="name" id="n2">name</div></td>
-	<td><input id="m2" type="text" size="70" disabled="true"></input></td>
+	<td><input id="m2" type="text" style="width: 620px;" disabled="true"></input></td>
       </tr>
     </table>
       </p>
 
-      <p>Message to send: <input id="mymsg" type="text" size="70"></input><button id="myb">send</button></p>
+      <p>Message to send: <input id="mymsg" type="text"  style="width: 620px;"></input><button id="myb">send</button></p>
       </div>
       
       <script type="text/javascript">
@@ -61,10 +61,6 @@
       document.getElementById("m2").value = decodeURI(m2);
       document.getElementById("iam").innerHTML = decodeURI(id == 1 ? n1 : n2);
       document.getElementById("pis").innerHTML = decodeURI(id == 1 ? n2 : n1);
-      //document.getElementById("b"+id).style.visibility="visible";
-      //document.getElementById("m"+id).disabled=false;
-      //document.getElementById("m"+id).focus();
-      //document.getElementById("m" + (id == 1 ? 2 : 1)).value = decodeURI(id == 1 ? m2 : m1);
       };
       
       var update = function() {
@@ -78,7 +74,11 @@
         console.log(obj);
         enable(obj.myid,obj.n1,obj.n2,obj.m1,obj.m2);	
 	}
-	else { updateFailed = false; }	
+	else if (http.readyState == 4) {
+	updateFailed = true;
+	document.getElementById("closedmsg").style.visibility = "visible";
+	console.log(http.readyState + " : " + http.status);
+	}	
       }    
       http.open("GET",url);
       http.responseType='text';
@@ -110,12 +110,20 @@
       let b = document.getElementById("myb");
       let m = document.getElementById("mymsg");
       b.addEventListener('click',function() { sendmesg(m.value,function() {m.value=""; update (); }); });
+      m.addEventListener('change',function() { sendmesg(m.value,function() {m.value=""; update (); }); });
       let foo = function(){ update(); if (!updateFailed) { setTimeout(foo,5000); } };
       foo();
       document.getElementById("mymsg").focus();
       }
       
     </script>
-    
+
+      <div id="closedmsg" style="position: absolute; top: 20px; left: 40px;
+		  height=400px; width=800px;
+		  font-size: 80px; font-weight: bold; color: red;
+		  visibility: hidden;">
+	Channel Closed
+      </div>
+      
     </body>
   </html>

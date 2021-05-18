@@ -25,13 +25,14 @@ my $leaveout = "";
 my $msg = param("opt");
 my @params = split(/\s+/,$msg);
 for my $k (@params) {
-    if ($k == "-s") { $sflag = 1; }
-    else if ($k == "-d") { $dflag = 1; }
-    else { $leaveout = $k;  }
+    if ($k eq "-s") { $sflag = 1; }
+    elsif ($k eq "-d") { $dflag = 1; }
+    elsif ($k eq "-h") { $hflag = 1; }
+    else { $leaveout eq $k;  }
 }
 
 my $resp = "";
-if ($hflag == 1) { $resp = "usage: mbpairs [-s|-d|-h] [&lt;leaveout&gt;]\n"; }
+if ($hflag == 1) { $resp = "usage: mbpairs [-s|-d|-h] [<leaveout>]"; }
 elsif ($dflag == 1) {
     chdir("sec");
     `./destroy.pl`;
@@ -50,7 +51,7 @@ END
 if ($resp ne "") { print $resp; exit(0); }
 
 ### construct pairs (possibly echoing to file)
-my $comm = "cat pswd.txt | egrep -o '^<b>.+<\/b>' | tr -d '\\r' | sort -u";
+my $comm = "cat mb.html | egrep -o '^<b>.+<\/b>' | tr -d '\\r' | sort -u";
 my $mb = `$comm`;
 my @lines = split /\n/, $mb;
 my @names = ( );
@@ -78,5 +79,5 @@ if ($sflag == 1) {
     chdir("sec"); 
     `./create.pl names.txt`;
     chdir($origdir);
-    print('<a href="sec/schannel.html" target="_blank" rel="noopener noreferrer">secret channel</a>
+    print('<a href="sec/schannel.html" target="_blank" rel="noopener noreferrer">secret channel</a>');
 }
