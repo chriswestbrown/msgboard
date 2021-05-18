@@ -18,7 +18,7 @@ commandExec["mbconf"] = function(rest) {
 commandExec["mbpairs"] = function(rest) {
     keyboardLockOut = true;
     const http = new XMLHttpRequest();
-    var url = "../msg/pairings.cgi?leaveout="+encodeURI(rest);
+    var url = "../msg/pairings.cgi?opt="+encodeURI(rest);
     http.onreadystatechange=(e)=>{
 	if (http.readyState == 4 && http.status == 200) {
 	    var resp = http.responseText.trimEnd();
