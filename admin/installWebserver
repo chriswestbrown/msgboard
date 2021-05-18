@@ -6,11 +6,15 @@ sudo apt-get -y install apache2
 sudo apt-get -y install libapache2-mod-perl2
 sudo apt-get -y install make
 sudo apt-get -y install curl
+sudo apt-get -y install sqlite3
 sudo apt-get install acl
 sudo apt-get install libcgi-session-perl
 
 ### Install perl module that for unknown reasons is missing as we go forward
 echo "yes" | sudo cpan -if CGI::Carp
+echo "yes" | sudo cpan -if DBD::SQLite
+echo "yes" | sudo cpan -if URI::Escape::XS
+echo "yes" | sudo cpan -if MIME::Base64
 
 ### add www-data to the admin group so it gets access to webserver logs.
 ### NOTE: normally this would be a *bad* idea ... we need it though.
