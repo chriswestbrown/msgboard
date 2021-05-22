@@ -28,7 +28,7 @@ for my $k (@params) {
     if ($k eq "-s") { $sflag = 1; }
     elsif ($k eq "-d") { $dflag = 1; }
     elsif ($k eq "-h") { $hflag = 1; }
-    else { $leaveout eq $k;  }
+    else { $leaveout = $k;  }
 }
 
 my $resp = "";

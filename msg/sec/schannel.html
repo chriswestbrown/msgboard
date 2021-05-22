@@ -110,7 +110,8 @@
       let b = document.getElementById("myb");
       let m = document.getElementById("mymsg");
       b.addEventListener('click',function() { sendmesg(m.value,function() {m.value=""; update (); }); });
-      m.addEventListener('change',function() { sendmesg(m.value,function() {m.value=""; update (); }); });
+      m.addEventListener("keyup", (event) => { if (event.key === "Enter") {
+          sendmesg(m.value,function() {m.value=""; update (); }); } });
       let foo = function(){ update(); if (!updateFailed) { setTimeout(foo,5000); } };
       foo();
       document.getElementById("mymsg").focus();
