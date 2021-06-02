@@ -194,8 +194,9 @@ var createIncompleteCharMap = function() {
   let cmap = createCharMap(alpha);
 
     function allowDrop(ev) {
-	console.log(ev.toElement.tagName);
-	if (ev.toElement.tagName == "TD" && ev.toElement.childElementCount == 0)
+	let targ = ev.target;/*ev.toElement;*/
+	console.log(targ.tagName);
+	if (targ.tagName == "TD" && targ.childElementCount == 0)
 	    ev.preventDefault();
     }
 
