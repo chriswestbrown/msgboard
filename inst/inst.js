@@ -31,3 +31,14 @@ commandExec["mbpairs"] = function(rest) {
     http.send();
     return "";
 }
+
+commandExec["link"] = function(rest) {
+    let URL = "";
+    if (rest.match(/^http(s?):/)) { URL = rest; }
+    else {
+	let L = window.location.href;
+	URL = L.replace(/inst\/[^/]*$/,rest);
+    }
+    let res = '<a href="' + URL + '" target="_blank" rel="noopener noreferrer">' + URL + '</a>';   
+    return res + "\r\n";
+}
