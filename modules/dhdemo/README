@@ -1,0 +1,19 @@
+* (almost) Diffie Hellman demo
+
+1. This is set up to show how an appropriate puzzle/problem can be used to produce a Diffie-Hellman style public key crypto algorithm for key exchange.  The resulting system is flawed in two important ways.  a) the problem isn't hard enough.  If you know linear algebra over GF(2) you can solve these problems in polynomial time.  b) More seriously as a demo, the attacker is not forced to solve a lights out puzzle in order to determine a shared secret, there's a way to side-step that and figure out the shared secret directly from the two public keys (L_A union L_B ) - (L_A intersect L_B).  It's very hard to find problems where we can be confident a) that the problem is hard enough, and b) that there is no side-stepping, i.e. the attacker has to solve an instance of the hard problem.
+
+
+2. This can also be used to illustrate the ideas behind digital signatures.
+
+If your message M you are signing is a subset of the alphabet, you do the following to sign:
+sig = (M union B_A) - (M intersect B_A)
+
+Verify:
+1. Use freeset to set the lights to the public key L_A, then turn off freeset
+2. Press the elements of message M
+3. Press the elements of sig
+4. If you get all lights out, sig is verified.
+
+Clearly, creating sig required having the private key B_A.  The problem here (other than it's not too difficult to "solve" the public key to recover the private key) is that the signature itself leaks too much information about the private key.  Once someone sees the signature, they could work out what the private key is.  Once again, to do this for real, we need to find problems/puzzles that are really hard and where attackers couldn't use the signature itself to sidestep the solving the hard problem in order to figure out the private key and/or forge signatures.
+
+

@@ -1,0 +1,174 @@
+Key Exchange using public key crypto
+
+TODOs:
+* get the DHDemo stuff as a cypro module
+* make the fonts and colors 
+
+INTRO: Get everyone a message board account!  (5 minutes?)
+
+A. Give the Alice & Bob scenario of secret key encryption.
+   Talk about the issue: Alice and Bob need to share a secret.
+   If there is an "ahead of time" they can arrange this ahead of
+   time.  But what if there isn't?  What if Alice is your browser
+   and Bob is a webserver you are visiting for the first time.
+   They need to share a secret, but there wasn't any ahead of time
+   and they can only communicate over the internet, which is insecure.
+   We need a method by which Alice and Bob can establish a secret that
+   only they know, even if all of their communications are monitored
+   while they talk back and forth to come up with the secret!
+   How to do this requires a different kind of cryptography, and that's
+   what I want to talk about today.  So, our problem is: Alice and Bob
+   need to come up with some kind of secret value (which they can turn
+   into their key later) that only they know, using only public
+   communication. (7-8) minutes.
+
+B. Introduce the puzzle and give them some time to try and
+   solve the puzzle.  The whole point is to convince them and
+   get them to agree that the puzzle is *hard*! (5 minutes)
+   * Do you all agree that this is a hard puzzle?
+
+C. This puzzle will be the foundation of the "public key 
+   crypto-system" we are going to develop to establish a shared
+   secret over an insecure channel.  In order to use it
+   as a foundation, we will have to study the game better.
+   This requires us to think a bit like mathematicians.
+   (NOTE: turn on the "labels")  [NOTE: 14 minutes for this piece.]
+
+   1. I want you all to play with pressing sets of buttons in
+      in different orders.  So choose a set of buttons (like {a,b,c})
+      and try pressing those buttons in different orders.  NOTE: you
+      have five different "boards" to play with.  Does anyone have a
+      hypothesis based on this experience?
+
+      Theorem: The result is the same regardless of the order the
+      buttons are pressed.
+
+      NOTE:  What do we call it when you have an operation to do several
+             times and the order in which you do them doesn't matter?
+	     Commutative!  So our hypothesis is that button pushing
+	     is commutative: ex. abc is the same as bca
+
+      Lemma: pressing button B1 then B2 is the same as pressing
+      B2 then B1.
+      Proof: Consider any square X on the board.  There are four cases
+      1: X at-or-adjacent-to B1,     X at-or-adjacent-to B2
+      2: X at-or-adjacent-to B1,     X not at-or-adjacent-to B2
+      3: X not at-or-adjacent-to B1, X at-or-adjacent-to B2
+      4: X not at-or-adjacent-to B1, X not at-or-adjacent-to B2
+      case 1: push B1,B2 => X toggled twice
+              push B2,B2 => X toggled twice  ... same result!
+      case 2: push B1,B2 => X toggled once
+              push B2,B2 => X toggled once  ... same result!
+      case 3: push B1,B2 => X toggled once
+              push B2,B2 => X toggled once  ... same result!
+      case 4: push B1,B2 => X left alone
+              push B2,B2 => X left alone  ... same result!
+
+   2. What happens if you press the same button twice?
+
+      Theorem: pushing button B then pushing B again leaves the
+               board unchanged.
+
+   3. The solution to the puzzle produced by pressing buttons
+      {B1,B2,...,Bk} is ...?
+
+      Theorem: If board is scrambled by pushing {B1,B2,...,Bk} then
+      pushing the same set of buttons solves the puzzle (i.e. turns
+      off all the lights).
+      Proof: it follows from the previous two theorems!
+
+      So, solving a lightsout puzzle is equivalent to figuring out
+      which buttons were pushed to produce the puzzle in the
+      first place!
+
+D. Now that we understand some key properties of this puzzle, let's
+   see if we can leverage it to create a mechanism by which Alice and
+   Bob can agree on some shared secret value using only public communication,
+   but which it is impractically difficult for Eve to figure out.
+
+   NOTE: pair everyone up
+
+   PHASE 1:
+   a. clear leftmost board, choose a random set of 8-15
+      letters and write them in the notes for that board.
+      We call this your "private key"
+   b. press the buttons labeled with your "private key" letters
+      (still in leftmost board)
+   c. Post to message board the list of letters that are lit up in
+      your leftmost board.  We call this your "public key"
+
+   PHASE 2:
+   a. clear 2nd board, check "freeset" and light up exactly the
+      squares that are listed in your partners "public key".
+      uncheck "freeset".
+   b. press the buttons labeled with your "private key" letters
+   c. in 2nd board notes, write down list of lit up letters in
+      alphabetical order.  This is your "secret".
+
+   If you did everything right, you and your partner should have
+   the same secret.  Check this among some pairs.
+
+   <8+ minutes up to here>
+
+   1. Why do you end up with the same secret?
+      * Alice starts with the result of pressing Bob's secret key buttons,
+        then presses her secret key buttons.
+      * Bob starts with the result of pressing Alice's secret key buttons,
+        then presses his secret key buttons.
+      Since button pushes are commutative, pressing Alice's then Bob's gives
+      the same result as pressing Bob's then Alice's.
+
+   2. We've tried to set up a situation where Eve has to figure out either
+      Alice's or Bob's secret key in order to get the secret.  However,
+      The only way to recover a secret key is to solve a hard puzzle!  I.e.
+      Eve has to solve a lights out puzzle (either Alice's public key or Bob's)
+      to discover a secret key, and the puzzle is hard.  So the difficulty of
+      the puzzle is supposed to be our protection.  Note: the function that
+      maps the secret key letters to the letters that are lit up after pushing
+      those puttons is a *one-way function*.  It's easy to do, but hard to reverse.
+      Note, by the way, that we could use larger and larger boards to make harder
+      and harder puzzles.  This is a common feature of public key crypto algorithms.
+
+    <4 more minutes>
+
+   3. This is an example of a "key exhange algorithm".  It operates very similarly
+      to Diffie-Helman key exchange, and Diffie-Helman and its variants are
+      the most commonly used key exchange algorithm on the modern internet.
+      Our key exchange algorithm is, sadly, flawed in two important ways.
+       i. The puzzle is not hard enough.  With some nice mathematics (gaussian
+          elimination) we can solve these puzzles without a crazy amount of work.
+      ii. It is possible to deduce the secret from the two public keys without
+          figuring out either private key.  Can you see how? I'm not telling!
+      It's actually really difficult to find a puzzle where the moves are
+      commutative (like our example), that is *really* hard, and where there's
+      no way to find the secret except to figure out one of the private keys.
+      Diffie-Helman and its variants each rely on different mathematical puzzles.
+      They require more mathematics than I'm ready to go into here, some of them
+      *lots* of mathematics.  But in principle, they work just like our "lights out"
+      based example ... just with puzzles that fit the requirements better.
+
+      <8 more minutes>
+
+E. If your message M you are signing is a subset of the alphabet, you do the following to sign:
+   K_pub and K_priv be the public and private keys
+
+sig = the set of letters that are in M  or K_priv but not both
+
+Verify:
+1. Use freeset to set the lights to the public key K_pub, then turn off freeset
+2. Press the elements of message M
+### Now we have a difficult puzzle, the signature *should* be a solution ###
+3. Press the elements of sig
+4. If you get all lights out, sig is verified.
+
+Clearly, creating sig required having the private key K_priv.  So we have strong evidence
+that sig was created by someone who knows the private key.
+
+The problem here (other than it's not too difficult to "solve" the public key to recover
+the private key) is that the signature itself leaks too much information about the private
+key.  Once someone sees the signature, they could work out what the private key is, and
+then they could go and forge new signatures.  Once again, to do this for real, we need to
+find problems/puzzles that are really hard and where attackers couldn't use the signature
+itself to sidestep the solving the hard problem in order to figure out the private key
+and/or forge signatures. 
+
