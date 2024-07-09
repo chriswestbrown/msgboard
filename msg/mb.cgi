@@ -109,7 +109,7 @@ print MBP <<END;
     <script type="text/javascript">
     setInterval(function() {
 	if (document.forms.namedItem('mbin').msg.value == "")
-            document.location.reload(true); },9000);
+            document.location.reload(true); },6000);
     </script>
 </head>
 <body>
@@ -117,7 +117,7 @@ print MBP <<END;
 $contents
 <hr>
     <form action="mb.cgi" name="mbin">
-      <input type="text" name="msg" style='width:700pt;'>
+      <input type="text" name="msg" style='width:700pt;' autofocus>
       <input type="button" onclick="submit()" value="post message">
     </form>
     <a href="login.html">login</a> &nbsp;&nbsp; 

